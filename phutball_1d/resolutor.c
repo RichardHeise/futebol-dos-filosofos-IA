@@ -8,17 +8,22 @@
 
 #define MAXSTR 512
 
+int h(char *p_campo, int tam, int pos_bola) {
+    // todo
+}
+
+int descobrePosicaoBola(char *p_campo, int tam) {
+    for (int i = 0; i < tam; i++) {
+        if (p_campo[i] == 'o') return i; 
+    }
+}
+
 void leEntrada(char infos[], char *p_meuLado, char *p_advLado, char *p_advMov, int *p_tam, char *p_campo) {
     sscanf(strtok(infos, " \n"), "%c", &(*p_meuLado));
     sscanf(strtok(NULL, " \n"), "%d", &(*p_tam));
     sscanf(strtok(NULL, " \n"), "%s", p_campo);
     sscanf(strtok(NULL, " \n"), "%c", &(*p_advLado));
     sscanf(strtok(NULL, " \n"), "%c", &(*p_advMov));
-
-    /*
-        printf("%c %d %s\n", lado_meu, tam_campo, campo);
-        printf("%c %c", lado_adv, mov_adv);
-    */
 }
 
 char* buscaMelhorJogada (char infos[]) {
@@ -27,30 +32,36 @@ char* buscaMelhorJogada (char infos[]) {
     char campo[MAXSTR];
 
     leEntrada(infos, &lado_meu, &lado_adv, &mov_adv, &tam_campo, campo);
+
     /*
         printf("%c %d %s\n", lado_meu, tam_campo, campo);
-        printf("%c %c", lado_adv, mov_adv);
+        printf("%c %c\n", lado_adv, mov_adv);
     */
+
     int pos_bola;
-    pos_bola = descobrePosicaoBola();
+    pos_bola = descobrePosicaoBola(campo, tam_campo);
 
     for (int i = pos_bola + 1; i < tam_campo; i++) {
+
         campo_tmp = campo;
-        if (campo[i] != 'f') {
+
+        if (campo_tmp[i] != 'f') {
+
             campo_tmp[i] = 'f';
+
             char *jogada;
             sprintf(jogada, "%c f %d", lado_meu, i);
         }
 
-        int heuristica = h(campo_tmp);
+        int heuristica = h(campo_tmp, tam_campo, pos_bola);
 
-        controlador.push_back(make_pair(jogada, heuristica));
+        //controlador.push_back(make_pair(jogada, heuristica));
     }
 
-    sort (controlador);
-
-    return controlador.front().first;
-
+    //return controlador.front().first;
+    
+    char *tmp = "abc";
+    return tmp;
 }
 
 int main(int argc, char **argv) {

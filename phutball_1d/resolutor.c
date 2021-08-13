@@ -5,79 +5,24 @@
 #include <readline/history.h>
 #include "campo.h"
 #include <math.h>
-
-#define MAXSTR 512
-
-int h(char *p_campo, int tam, int pos_bola) {
-    // todo
-}
-
-int descobrePosicaoBola(char *p_campo, int tam) {
-    for (int i = 0; i < tam; i++) {
-        if (p_campo[i] == 'o') return i; 
-    }
-}
-
-void leEntrada(char infos[], char *p_meuLado, char *p_advLado, char *p_advMov, int *p_tam, char *p_campo) {
-    sscanf(strtok(infos, " \n"), "%c", &(*p_meuLado));
-    sscanf(strtok(NULL, " \n"), "%d", &(*p_tam));
-    sscanf(strtok(NULL, " \n"), "%s", p_campo);
-    sscanf(strtok(NULL, " \n"), "%c", &(*p_advLado));
-    sscanf(strtok(NULL, " \n"), "%c", &(*p_advMov));
-}
-
-char* buscaMelhorJogada (char infos[]) {
-    char lado_meu, lado_adv, mov_adv;
-    int tam_campo;
-    char campo[MAXSTR];
-
-    leEntrada(infos, &lado_meu, &lado_adv, &mov_adv, &tam_campo, campo);
-
-    /*
-        printf("%c %d %s\n", lado_meu, tam_campo, campo);
-        printf("%c %c\n", lado_adv, mov_adv);
-    */
-
-    int pos_bola;
-    pos_bola = descobrePosicaoBola(campo, tam_campo);
-
-    for (int i = pos_bola + 1; i < tam_campo; i++) {
-
-        campo_tmp = campo;
-
-        if (campo_tmp[i] != 'f') {
-
-            campo_tmp[i] = 'f';
-
-            char *jogada;
-            sprintf(jogada, "%c f %d", lado_meu, i);
-        }
-
-        int heuristica = h(campo_tmp, tam_campo, pos_bola);
-
-        //controlador.push_back(make_pair(jogada, heuristica));
-    }
-
-    //return controlador.front().first;
-    
-    char *tmp = "abc";
-    return tmp;
-}
+#include "inteligencia.h"
 
 int main(int argc, char **argv) {
-  char buf[MAXSTR];
+  char *buffer = criaVetor();
   char *linha;
   
   campo_conecta(argc, argv);
 
   while(1) {
-    campo_recebe(buf);
+    campo_recebe(buffer);
     //printf("%s", buf);
-    linha = buscaMelhorJogada(buf);
+    linha = buscaMelhorJogada(buffer);
     if(linha[0] == '0')
       break;
-    sprintf(buf, "%s\n", linha);
+    sprintf(buffer, "%s\n", linha);
     //free(linha);
-    campo_envia(buf);
+    campo_envia(buffer);
   }
+
+  free(buffer);
 }

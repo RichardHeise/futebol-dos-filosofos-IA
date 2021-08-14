@@ -9,7 +9,9 @@ exemplo1: campo.h campo.c exemplo1.c
 
 exemplo2: campo.h campo.c exemplo2.c
 
-resolutor: campo.h campo.c resolutor.c
+resolutor: campo.h campo.c resolutor.c inteligencia.o
+
+inteligencia: inteligencia.h inteligencia.c
 
 clean:
 	rm -f controlador exemplo1 exemplo2 *.o

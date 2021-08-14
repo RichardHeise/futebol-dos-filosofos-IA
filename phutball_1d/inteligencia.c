@@ -38,7 +38,7 @@ int descobrePosicaoBola(char *p_campo, int tam) {
     for (int i = 0; i < tam; i++) {
         if (p_campo[i] == 'o') return i; 
     }
-    return 1;
+    return 0;
 }
 
 //CONFERE AÍ RICHARD ACHO QUE TÁ CERTO MAS NAO CONSEGUI TESTAR :)
@@ -103,7 +103,7 @@ char* buscaMelhorJogada (char *buffer) {
 
             campo_tmp[i] = 'f';
 
-            char *jogada;
+            char jogada[25];
             sprintf(jogada, "%c f %d", jogo->lado_meu, i);
         }
 

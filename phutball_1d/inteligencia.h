@@ -1,6 +1,14 @@
 #ifndef RESOLVEDOR_H
 #define RESOLVEDOR_H
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <readline/readline.h>
+#include <readline/history.h>
+#include "campo.h"
+#include <math.h>
+
 #define MAXSTR 512
 #define MAXINT 16
 

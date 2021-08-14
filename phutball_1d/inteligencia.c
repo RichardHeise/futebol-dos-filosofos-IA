@@ -45,7 +45,7 @@ int descobrePosicaoBola(char *p_campo, int tam) {
 int heuristica(char *p_campo, int tam, int pos_bola) {
 
     //distancia da bola ate o fim do campo
-    int dist = tam - pos_bola;
+    int dist = (tam - 1) - pos_bola;
 
     //indice e numero de passos até terminar o jogo
     int i = dist+1, passos = 0;
@@ -61,7 +61,7 @@ int heuristica(char *p_campo, int tam, int pos_bola) {
         i+=2;
 
     //calcula o resto e dale
-    for(;;i+=2){
+    for(; i < (tam - 1);i+=2){
         if(p_campo[i] == 'f')
             passos++;
     }
@@ -69,6 +69,7 @@ int heuristica(char *p_campo, int tam, int pos_bola) {
     return passos;
 }
 
+// copia o vetor origem no vetor destino
 void copiaVetor(char *vetor_dest, char *vetor_orig, int tam){
     int i;
     for(i = 0; i < tam; i++){

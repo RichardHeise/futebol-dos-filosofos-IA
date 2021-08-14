@@ -199,28 +199,19 @@ char* buscaMelhorJogada (char *buffer) {
                     campo_tmp[i] = 'o';
                     jogo->pos_bola = i;
 
-                    for (int j = jogo->pos_bola-2; j >= 0; j--) {
-                        printf("j: %d\n", j);
+                    // mudar para jogadas do oponente
+                    h = heuristica(campo_tmp, jogo->tam_campo, jogo->pos_bola);
 
-                        strcpy(campo_tmpAdv, campo_tmp);
-
-                        campo_tmpAdv[j] = 'f';
-
-                        h = heuristica(campo_tmpAdv, jogo->tam_campo, jogo->pos_bola);
-
-                        if (h < melhorHeuristica) {
-                            melhorHeuristica = h;
-                            sprintf(melhorJogada, "%c f %d", jogo->lado_meu, i+1);
-                        }
-
-                        printf("campo: %s, campo adv: %s\n", campo_tmp, campo_tmpAdv);
+                    if (h < melhorHeuristica) {
+                        melhorHeuristica = h;
+                        sprintf(melhorJogada, "%c f %d", jogo->lado_meu, i+1);
                     }
+                    printf("campo: %s, heuristica: %d\n", campo_tmp, h);
                 }
             }
         }
     }
 
-    // menage raul
     if (gol) {
         char* tmp = criaString();
 

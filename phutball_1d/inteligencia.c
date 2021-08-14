@@ -100,6 +100,26 @@ void copiaVetor(char *vetor_dest, char *vetor_orig, int tam){
     }
 }
 
+//calcula os chutes necessários pra fazer o gol
+void fazerGol(jogo_t *jogo, char *melhorJogada, int* chutes, int qtdChutes){
+
+        char* tmp = criaString();
+        sprintf(melhorJogada, "%c o %d", jogo->lado_meu, qtdChutes+1);
+
+        for (int i = 0; i < qtdChutes; i++) {
+            sprintf(tmp, " %d", chutes[i]+1);
+            strcat(melhorJogada, tmp);
+        }
+
+        sprintf(tmp, " %d", jogo->tam_campo+1);
+        strcat(melhorJogada, tmp);
+
+        sprintf(tmp, "\n");
+        strcat(melhorJogada, tmp);
+
+        printf("jogada do chute: %s\n", melhorJogada);
+}
+
 char* buscaMelhorJogada (char *buffer) {
 
     //crio a struct
@@ -143,16 +163,19 @@ char* buscaMelhorJogada (char *buffer) {
 
                 strcpy(campo_tmpAdv, campo_tmp);
 
-                campo_tmpAdv[j] = 'f';
+                if(campo_tmpAdv[j] != 'f'){
+                    
+                    campo_tmpAdv[j] = 'f';
 
-                h = heuristica(campo_tmpAdv, jogo->tam_campo, jogo->pos_bola);
+                    h = heuristica(campo_tmpAdv, jogo->tam_campo, jogo->pos_bola);
 
-                if (h < melhorHeuristica) {
-                    melhorHeuristica = h;
-                    sprintf(melhorJogada, "%c f %d", jogo->lado_meu, i+1);
+                    if (h < melhorHeuristica) {
+                        melhorHeuristica = h;
+                        sprintf(melhorJogada, "%c f %d", jogo->lado_meu, i+1);
+                    }
+
+                    printf("campo: %s, campo adv: %s\n", campo_tmp, campo_tmpAdv);
                 }
-
-                printf("campo: %s, campo adv: %s\n", campo_tmp, campo_tmpAdv);
             }
 
             printf("campo: %s, heuristica: %d\n", campo_tmp, h);
@@ -211,24 +234,9 @@ char* buscaMelhorJogada (char *buffer) {
             }
         }
     }
-
+    
     if (gol) {
-        char* tmp = criaString();
-
-        sprintf(melhorJogada, "%c o %d", jogo->lado_meu, qtdChutes+1);
-
-        for (int i = 0; i < qtdChutes; i++) {
-            sprintf(tmp, " %d", chutes[i]+1);
-            strcat(melhorJogada, tmp);
-        }
-
-        sprintf(tmp, " %d", jogo->tam_campo+1);
-        strcat(melhorJogada, tmp);
-
-        sprintf(tmp, "\n");
-        strcat(melhorJogada, tmp);
-
-        printf("jogada do chute: %s\n", melhorJogada);
+        fazerGol(jogo, melhorJogada, chutes, qtdChutes);
     }
 
     //freee nas variáveis

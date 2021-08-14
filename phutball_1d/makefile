@@ -1,7 +1,7 @@
 CFLAGS = -g -Wall -Wno-unused-result -O3
 LDLIBS = -l hiredis -l readline
 
-all: controlador exemplo1 exemplo2 resolutor
+all: exemplo1 exemplo2 resolutor
 
 controlador: controlador.c
 
@@ -14,4 +14,4 @@ resolutor: campo.h campo.c resolutor.c inteligencia.o
 inteligencia: inteligencia.h inteligencia.c
 
 clean:
-	rm -f controlador exemplo1 exemplo2 *.o
+	rm -f exemplo1 exemplo2 *.o

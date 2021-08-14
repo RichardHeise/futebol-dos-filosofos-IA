@@ -38,6 +38,8 @@ void leEntrada(char *buffer, jogo_t *jogo);
 
 int heuristica(char *p_campo, int tam, int pos_bola);
 
+void fazerGol(jogo_t *jogo, char *melhorJogada, int* chutes, int qtdChutes);
+
 char* buscaMelhorJogada (char *buffer);
 
 #endif

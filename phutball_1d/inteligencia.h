@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stddef.h>
 #include <string.h>
 #include <readline/readline.h>
 #include <readline/history.h>
@@ -29,9 +30,9 @@ char *criaVetor();
 
 jogo_t *criaJogo();
 
-void leEntrada(char *buffer, jogo_t *jogo);
-
 int descobrePosicaoBola(char *p_campo, int tam);
+
+void leEntrada(char *buffer, jogo_t *jogo);
 
 int heuristica(char *p_campo, int tam, int pos_bola);
 

@@ -10,7 +10,6 @@ int main(int argc, char **argv) {
     campo_recebe(buffer);
     printf("%s", buffer);
     linha = buscaMelhorJogada(buffer);
-    printf("linha? %s\n", linha);
     if(linha[0] == '0')
       break;
     sprintf(buffer, "%s\n", linha);

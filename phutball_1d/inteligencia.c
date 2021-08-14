@@ -98,16 +98,17 @@ char* buscaMelhorJogada (char *buffer) {
 
         //copiei o vetor temporário
         copiaVetor(campo_tmp, jogo->campo, jogo->tam_campo);
+        char jogada[25];
 
         if (campo_tmp[i] != 'f') {
 
             campo_tmp[i] = 'f';
 
-            char jogada[25];
             sprintf(jogada, "%c f %d", jogo->lado_meu, i);
         }
 
         int h = heuristica(campo_tmp, jogo->tam_campo, jogo->pos_bola);
+        printf("campo: %s, jogada: %s, heuristica: %d\n", campo_tmp, jogada, h);
 
         //controlador.push_back(make_pair(jogada, heuristica));
     }

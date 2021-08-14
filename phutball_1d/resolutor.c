@@ -8,12 +8,13 @@ int main(int argc, char **argv) {
 
   while(1) {
     campo_recebe(buffer);
-    //printf("%s", buf);
+    printf("%s", buffer);
     linha = buscaMelhorJogada(buffer);
+    printf("linha? %s\n", linha);
     if(linha[0] == '0')
       break;
     sprintf(buffer, "%s\n", linha);
-    //free(linha);
+    free(linha);
     campo_envia(buffer);
   }
 

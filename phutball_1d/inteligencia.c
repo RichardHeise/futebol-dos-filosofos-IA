@@ -7,8 +7,15 @@ void testaMalloc(void *ptr){
     }
 }
 
-char *criaVetor(){
+char *criaString(){
     char *vetor = malloc(sizeof(char) * MAXSTR);
+    testaMalloc(vetor);
+
+    return vetor;
+}
+
+int *criaVetor(){
+    int *vetor = malloc(sizeof(int) * MAXSTR);
     testaMalloc(vetor);
 
     return vetor;
@@ -18,7 +25,7 @@ jogo_t *criaJogo(){
     jogo_t *jogo = malloc(sizeof(jogo_t));
     testaMalloc(jogo);
 
-    jogo->campo = criaVetor();
+    jogo->campo = criaString();
 
     return jogo;
 }
@@ -32,7 +39,7 @@ void leEntrada(char *buffer, jogo_t *jogo) {
 }
 
 char* jogaChute(char* campo, int tam, int posBola, char** chutes, int tam_chutes) {
-    char* jogada = criaVetor();
+    char* jogada = criaString();
     return jogada;
 }
 
@@ -45,7 +52,7 @@ int descobrePosicaoBola(char *p_campo, int tam) {
 }
 
 char* descobreChutes(char* campo, int posBola, int tam, int* tam_chutes) {
-    char* chutes_possiveis = criaVetor();
+    char* chutes_possiveis = criaString();
 
     
 
@@ -109,8 +116,8 @@ char* buscaMelhorJogada (char *buffer) {
     jogo->pos_bola = descobrePosicaoBola(jogo->campo, jogo->tam_campo)+1;
 
     //declarei o vetor temporário
-    char *campo_tmp = criaVetor();
-    char *melhorJogada = criaVetor();
+    char *campo_tmp = criaString();
+    char *melhorJogada = criaString();
     int melhorHeuristica = 500;
 
     printf("============ CHECANDO FILOSOFO =================\n");
@@ -129,7 +136,7 @@ char* buscaMelhorJogada (char *buffer) {
 
             int h;
 
-            char* campo_tmpAdv = criaVetor();
+            char* campo_tmpAdv = criaString();
 
             for (int j = jogo->pos_bola-2; j >= 0; j--) {
                 printf("j: %d\n", j);
@@ -157,13 +164,17 @@ char* buscaMelhorJogada (char *buffer) {
     printf("============ CHECANDO CHUTE =================\n");
     // implementar jogaChute() e decobreChutes()
     
+    int* chutes = criaVetor();
+    int qtdChutes = 0;
     int gol = 0;
+
     if (jogo->campo[jogo->pos_bola] == 'f') {
 
         //copiei o vetor temporário
         gol = 1;
         int contador = 0;
         int h;
+
         for (int i = jogo->pos_bola+1; i < jogo->tam_campo; i++) {
             
             if (campo_tmp[i] == 'f') {
@@ -171,11 +182,13 @@ char* buscaMelhorJogada (char *buffer) {
 
             } else {
                 contador++;
-                
+
                 if ( contador == 2) {
                     gol = 0;
                     break;
                 } else {
+                    chutes[qtdChutes] = i;
+                    qtdChutes++;
 
                     strcpy(campo_tmp, jogo->campo);
 
@@ -186,22 +199,45 @@ char* buscaMelhorJogada (char *buffer) {
                     campo_tmp[i] = 'o';
                     jogo->pos_bola = i;
 
-                    h = heuristica(campo_tmp, jogo->tam_campo, jogo->pos_bola);
+                    for (int j = jogo->pos_bola-2; j >= 0; j--) {
+                        printf("j: %d\n", j);
 
-                    if (h < melhorHeuristica) {
-                        melhorHeuristica = h;
-                        sprintf(melhorJogada, "%c f %d", jogo->lado_meu, i+1);
+                        strcpy(campo_tmpAdv, campo_tmp);
+
+                        campo_tmpAdv[j] = 'f';
+
+                        h = heuristica(campo_tmpAdv, jogo->tam_campo, jogo->pos_bola);
+
+                        if (h < melhorHeuristica) {
+                            melhorHeuristica = h;
+                            sprintf(melhorJogada, "%c f %d", jogo->lado_meu, i+1);
+                        }
+
+                        printf("campo: %s, campo adv: %s\n", campo_tmp, campo_tmpAdv);
                     }
-                    printf("campo: %s, heuristica: %d\n", campo_tmp, h);
                 }
-
             }
+        }
+    }
 
+    // menage raul
+    if (gol) {
+        char* tmp = criaString();
+
+        sprintf(melhorJogada, "%c o %d", jogo->lado_meu, qtdChutes+1);
+
+        for (int i = 0; i < qtdChutes; i++) {
+            sprintf(tmp, " %d", chutes[i]+1);
+            strcat(melhorJogada, tmp);
         }
 
-    }
-    if (gol) {
-        sprintf(melhorJogada, "%c o 1 %d", jogo->lado_meu, 8); 
+        sprintf(tmp, " %d", jogo->tam_campo+1);
+        strcat(melhorJogada, tmp);
+
+        sprintf(tmp, "\n");
+        strcat(melhorJogada, tmp);
+
+        printf("jogada do chute: %s\n", melhorJogada);
     }
 
     //freee nas variáveis

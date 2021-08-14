@@ -1,7 +1,7 @@
 #include "inteligencia.h"
 
 int main(int argc, char **argv) {
-  char *buffer = criaVetor();
+  char *buffer = criaString();
   char *linha;
   
   campo_conecta(argc, argv);

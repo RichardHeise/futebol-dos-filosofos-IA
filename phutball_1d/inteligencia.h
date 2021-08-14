@@ -26,7 +26,9 @@ typedef struct tipo_jogo
 
 void testaMalloc(void *ptr);
 
-char *criaVetor();
+int *criaVetor();
+
+char *criaString();
 
 jogo_t *criaJogo();
 

@@ -19,7 +19,7 @@
 # 	rm -f exemplo1 exemplo2 *.o
 
 CC = gcc
-OBJS = resolutor.o direita.o inteligencia.o	campo.o	
+OBJS = resolutor.o direita.o inteligencia.o	campo.o	esquerda.o
 LIBS = -l hiredis -l readline
 OUTPUT = 	
 CFLAGS = -Wall -O3
@@ -38,6 +38,9 @@ campo.o: campo.h campo.c
 
 direita.o: direita.c direita.h
 	$(CC) $(CFLAGS) -c direita.c
+
+esquerda.o: esquerda.c esquerda.h
+	$(CC) $(CFLAGS) -c esquerda.c
 
 inteligencia.o: inteligencia.c inteligencia.h
 	$(CC) $(CFLAGS) -c inteligencia.c

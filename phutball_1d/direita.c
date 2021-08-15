@@ -20,7 +20,8 @@ void fazerGol(jogo_t *jogo, char *melhorJogada, int* chutes, int qtdChutes){
     free(tmp);
 }
 
-int heuristica(char *p_campo, int tam, int pos_bola) {
+// essa checa pra direita
+int heuristicaDireita(char *p_campo, int tam, int pos_bola) {
 
     //distancia da bola ate o fim do campo
 
@@ -64,13 +65,13 @@ int testaFilosofosAdv(jogo_t *jogo, char *campo_tmp){
             
             campo_tmpAdv[j] = 'f';
 
-            h = heuristica(campo_tmpAdv, jogo->tam_campo, jogo->pos_bola);
+            h = heuristicaDireita(campo_tmpAdv, jogo->tam_campo, jogo->pos_bola);
 
             if (h > maiorHeuristica) {
                 maiorHeuristica = h;
             }
 
-            // printf("campo: %s, heuristica: %d\n", campo_tmp, h);
+            // printf("campo: %s, heuristicaDireita: %d\n", campo_tmp, h);
 
         }
     }
@@ -81,7 +82,7 @@ int testaFilosofosAdv(jogo_t *jogo, char *campo_tmp){
 
 int testaChuteDireita(jogo_t *jogo, char *campo){
 
-    if( heuristica(campo, jogo->tam_campo, jogo->pos_bola) == 1 ){
+    if( heuristicaDireita(campo, jogo->tam_campo, jogo->pos_bola) == 1 ){
         if(jogo->lado_meu == 'd')
             return 34000;
         return 1;
@@ -113,14 +114,14 @@ int testaChuteDireita(jogo_t *jogo, char *campo){
                 // chuta
                 campo_tmp[i] = 'o';
 
-                // analiso a heuristica do campo
-                h = heuristica(campo_tmp, jogo->tam_campo, i+1);
+                // analiso a heuristicaDireita do campo
+                h = heuristicaDireita(campo_tmp, jogo->tam_campo, i+1);
 
                 if (h > maiorHeuristica) {
                     maiorHeuristica = h;
                 }
 
-                printf("campo: %s, heuristica: %d, maior: %d\n", campo_tmp, h, maiorHeuristica);
+                printf("campo: %s, heuristicaDireita: %d, maior: %d\n", campo_tmp, h, maiorHeuristica);
             }
         }
     }
@@ -145,6 +146,9 @@ char* buscaMelhorJogada (char *buffer) {
 
     printf("============ CHECANDO FILOSOFO =================\n");
     printf("pos bola: %d\n", jogo->pos_bola);
+
+    // FUNCIONOU HEIN só não chamei a esquerda.h aqui, se quiser testar é só incluir
+    // printf("heuristicaDireita teste: %d\n", heuristicaEsquerda(jogo->campo, jogo->tam_campo, jogo->pos_bola));
 
     // OTIMIZAR IGUAL A HEURISTICA!!!
     for (int i = jogo->pos_bola; i < jogo->tam_campo; i++) {
@@ -181,7 +185,7 @@ char* buscaMelhorJogada (char *buffer) {
         }
     }
 
-    printf("melhor jogada: %s, heuristica: %d\n", melhorJogada, melhorHeuristica);
+    printf("melhor jogada: %s, heuristicaDireita: %d\n", melhorJogada, melhorHeuristica);
 
     printf("============ CHECANDO CHUTE =================\n");
     // implementar jogaChute() e decobreChutes()

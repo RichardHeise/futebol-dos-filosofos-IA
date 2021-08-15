@@ -43,5 +43,5 @@ int descobrePosicaoBola(char *p_campo, int tam) {
     for (int i = 0; i < tam; i++) {
         if (p_campo[i] == 'o') return i; 
     }
-    return 0;
+    return -1;
 }

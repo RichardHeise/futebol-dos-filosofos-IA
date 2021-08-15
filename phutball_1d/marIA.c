@@ -1,20 +1,26 @@
-#include "marIA.h"
+  
+#include "marIAlib.h"
+#include "campo.h"
 
-char* resolve(char* buffer) {
-    //crio a struct
-    jogo_t *jogo;
-    jogo = criaJogo();
+int main(int argc, char **argv) {
+  char *buffer = criaString();
+  char *linha;
+  
+  campo_conecta(argc, argv);
 
-    //le entrada e descobre posicao da bola
-    leEntrada(buffer, jogo);
-    
-    if (jogo->lado_meu == 'e') {
-        return buscaMelhorJogadaDireita(jogo);
-    }
-    if (jogo->lado_meu == 'd') {
-        return buscaMelhorJogadaEsquerda(jogo);
-    }
+  while(1) {
+    campo_recebe(buffer);
+    //printf("%s", buffer);
+    linha = resolve(buffer);
+    if(linha[0] == '0')
+      break;
+      
+    printf("linha: %s\n", linha);
 
-    return "0";
+    sprintf(buffer, "%s\n", linha);
+    free(linha);
+    campo_envia(buffer);
+  }
+
+  free(buffer);
 }
-

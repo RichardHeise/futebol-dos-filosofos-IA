@@ -1,44 +1,20 @@
-# CFLAGS = -g -Wall -Wno-unused-result -O3
-# LDLIBS = -l hiredis -l readline
-
-# all: direita uteis exemplo1 exemplo2 resolutor
-
-# controlador: controlador.c
-
-# exemplo1: campo.h campo.c exemplo1.c
-
-# exemplo2: campo.h campo.c exemplo2.c
-
-# resolutor: campo.h campo.c resolutor.c direita.o
-
-# direita: direita.c direita.h uteis.o
-
-# uteis: uteis.h uteis.c
-
-# clean:
-# 	rm -f exemplo1 exemplo2 *.o
-
 CC = gcc
-OBJS = resolutor.o direita.o uteis.o campo.o esquerda.o marIA.o
+OBJS =  direita.o uteis.o campo.o esquerda.o marIA.o marIAlib.o
 LIBS = -l hiredis -l readline
 OUTPUT = 	
 CFLAGS = -Wall -O3
 
-all: $(OBJS) exemplo2
-	$(CC) $(OBJS) $(LIBS) -o resolutor
+all: $(OBJS) 
+	$(CC) $(OBJS) $(LIBS) -o marIA
 
-exemplo2: campo.h campo.c exemplo2.c
-	$(CC) campo.c exemplo2.c $(LIBS) -o exemplo2
-
-resolutor.o: resolutor.c
-	$(CC) $(CFLAGS) -c resolutor.c
-	
-marIA.o: marIA.h marIA.c
+marIA.o: marIA.c
 	$(CC) $(CFLAGS) -c marIA.c
+	
+marIAlib.o: marIAlib.h marIAlib.c
+	$(CC) $(CFLAGS) -c marIAlib.c
 
 campo.o: campo.h campo.c
 	$(CC) $(CFLAGS) -c campo.c
-
 
 direita.o: direita.c direita.h
 	$(CC) $(CFLAGS) -c direita.c
@@ -54,4 +30,4 @@ clean:
 	$(RM) $(OBJS)
 
 purge: clean
-	rm -f exemplo1 exemplo2 *.o
+	rm -f *.o

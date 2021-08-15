@@ -46,7 +46,6 @@ int descobrePosicaoBola(char *p_campo, int tam) {
     return -1;
 }
 
-//calcula os chutes necessários pra fazer o gol
 void chuta(jogo_t *jogo, char *melhorJogada, int* chutes, int qtdChutes, int gol){
 
     char* tmp = criaString();

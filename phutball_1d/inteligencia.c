@@ -120,25 +120,50 @@ void fazerGol(jogo_t *jogo, char *melhorJogada, int* chutes, int qtdChutes){
         printf("jogada do chute: %s\n", melhorJogada);
 }
 
+int testaFilosofosAdv(jogo_t *jogo, char* melhorJogada, char *campo_tmp){
+
+    int h, maiorHeuristica = 0;
+
+    char* campo_tmpAdv = criaString();
+
+    for (int j = jogo->pos_bola-2; j >= 0; j--) {
+        printf("j: %d\n", j);
+
+        strcpy(campo_tmpAdv, campo_tmp);
+
+        if(campo_tmpAdv[j] != 'f'){
+            
+            campo_tmpAdv[j] = 'f';
+
+            h = heuristica(campo_tmpAdv, jogo->tam_campo, jogo->pos_bola);
+
+            if (h > maiorHeuristica) {
+                maiorHeuristica = h;
+            }
+
+            printf("campo: %s, campo adv: %s\n", campo_tmp, campo_tmpAdv);
+        }
+    }
+
+    printf("campo: %s, heuristica: %d\n", campo_tmp, h);
+    free(campo_tmpAdv);
+    return maiorHeuristica;
+}
+
 char* buscaMelhorJogada (char *buffer) {
 
     //crio a struct
     jogo_t *jogo;
     jogo = criaJogo();
 
+    //le entrada e descobre posicao da bola
     leEntrada(buffer, jogo);
-
-    /*
-        printf("%c %d %s\n", lado_meu, tam_campo, campo);
-        printf("%c %c\n", lado_adv, mov_adv);
-    */
-
     jogo->pos_bola = descobrePosicaoBola(jogo->campo, jogo->tam_campo)+1;
 
     //declarei o vetor temporário
     char *campo_tmp = criaString();
     char *melhorJogada = criaString();
-    int melhorHeuristica = 500;
+    int h, melhorHeuristica = 32000;
 
     printf("============ CHECANDO FILOSOFO =================\n");
     printf("pos bola: %d\n", jogo->pos_bola);
@@ -154,34 +179,12 @@ char* buscaMelhorJogada (char *buffer) {
 
             campo_tmp[i] = 'f';
 
-            int h;
-
-            char* campo_tmpAdv = criaString();
-
-            for (int j = jogo->pos_bola-2; j >= 0; j--) {
-                printf("j: %d\n", j);
-
-                strcpy(campo_tmpAdv, campo_tmp);
-
-                if(campo_tmpAdv[j] != 'f'){
-                    
-                    campo_tmpAdv[j] = 'f';
-
-                    h = heuristica(campo_tmpAdv, jogo->tam_campo, jogo->pos_bola);
-
-                    if (h < melhorHeuristica) {
-                        melhorHeuristica = h;
-                        sprintf(melhorJogada, "%c f %d", jogo->lado_meu, i+1);
-                    }
-
-                    printf("campo: %s, campo adv: %s\n", campo_tmp, campo_tmpAdv);
-                }
+            h = testaFilosofosAdv(jogo, melhorJogada, campo_tmp);
+            if( h < melhorHeuristica){
+                melhorHeuristica = h;
+                sprintf(melhorJogada, "%c f %d", jogo->lado_meu, i+1);
             }
-
-            printf("campo: %s, heuristica: %d\n", campo_tmp, h);
-
         }
-
     }
 
     printf("============ CHECANDO CHUTE =================\n");
@@ -196,7 +199,7 @@ char* buscaMelhorJogada (char *buffer) {
         //copiei o vetor temporário
         gol = 1;
         int contador = 0;
-        int h;
+        // int h;
 
         for (int i = jogo->pos_bola+1; i < jogo->tam_campo; i++) {
             
@@ -223,13 +226,31 @@ char* buscaMelhorJogada (char *buffer) {
                     jogo->pos_bola = i;
 
                     // mudar para jogadas do oponente
-                    h = heuristica(campo_tmp, jogo->tam_campo, jogo->pos_bola);
 
-                    if (h < melhorHeuristica) {
-                        melhorHeuristica = h;
-                        sprintf(melhorJogada, "%c f %d", jogo->lado_meu, i+1);
-                    }
-                    printf("campo: %s, heuristica: %d\n", campo_tmp, h);
+                    // char* campo_tmpAdv = criaString();
+
+                    // for (int j = jogo->pos_bola-2; j >= 0; j--) {
+                    //     printf("j: %d\n", j);
+
+                    //     strcpy(campo_tmpAdv, campo_tmp);
+
+                    //     if(campo_tmpAdv[j] != 'f'){
+                                
+                    //         campo_tmpAdv[j] = 'f';
+
+                    //         h = heuristica(campo_tmpAdv, jogo->tam_campo, jogo->pos_bola);
+
+                    //         if (h < melhorHeuristica) {
+                    //             melhorHeuristica = h;
+                    //             sprintf(melhorJogada, "%c f %d", jogo->lado_meu, i+1);
+                    //         }
+
+                    //         printf("campo: %s, campo adv: %s\n", campo_tmp, campo_tmpAdv);
+                    //     }
+                    // }
+
+                    // free(campo_tmpAdv);
+
                 }
             }
         }

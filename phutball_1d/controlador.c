@@ -32,7 +32,7 @@ redisContext* inicia(int argc, char **argv, char *lado, int *tam,
   *jogadas = atoi(argv[3]);
   strcpy(tempo, argv[4]);
   ip  = (argc > 5) ? argv[5] : "127.0.0.1";
-  porta = (argc > 6) ? atoi(argv[6]) : 10001;
+  porta = (argc > 6) ? atoi(argv[6]) : 9555;
 
   rediscontext = redisConnect(ip, porta);
   if (rediscontext == NULL || rediscontext->err) {

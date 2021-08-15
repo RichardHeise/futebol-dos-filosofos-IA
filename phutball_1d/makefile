@@ -30,4 +30,4 @@ clean:
 	$(RM) $(OBJS)
 
 purge: clean
-	rm -f *.o
+	rm -f marIA *.o

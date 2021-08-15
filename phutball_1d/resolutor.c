@@ -13,6 +13,9 @@ int main(int argc, char **argv) {
     linha = resolve(buffer);
     if(linha[0] == '0')
       break;
+      
+    printf("linha: %s\n", linha);
+
     sprintf(buffer, "%s\n", linha);
     free(linha);
     campo_envia(buffer);

@@ -11,8 +11,10 @@ char* resolve(char* buffer) {
     if (jogo->lado_meu == 'e') {
         return buscaMelhorJogadaDireita(jogo);
     }
-    else {
+    if (jogo->lado_meu == 'd') {
         return buscaMelhorJogadaEsquerda(jogo);
     }
+
+    return "0";
 }
 

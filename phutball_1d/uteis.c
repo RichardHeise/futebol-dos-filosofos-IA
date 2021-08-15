@@ -49,7 +49,6 @@ int descobrePosicaoBola(char *p_campo, int tam) {
 //calcula os chutes necessários pra fazer o gol
 void chuta(jogo_t *jogo, char *melhorJogada, int* chutes, int qtdChutes, int gol){
 
-
     char* tmp = criaString();
     sprintf(melhorJogada, "%c o %d", jogo->lado_meu, qtdChutes + ((gol) ? 1 : 0));
 
@@ -58,13 +57,16 @@ void chuta(jogo_t *jogo, char *melhorJogada, int* chutes, int qtdChutes, int gol
         strcat(melhorJogada, tmp);
     }
 
-    if (gol) {
-        sprintf(tmp, " %d", jogo->tam_campo+1);
-        strcat(melhorJogada, tmp);
-    }
 
-    sprintf(tmp, "\n");
-    strcat(melhorJogada, tmp);
+    if (gol) {
+        if (jogo->lado_meu == 'e') {
+            sprintf(tmp, " %d", jogo->tam_campo+1);
+            strcat(melhorJogada, tmp);
+        } else {
+            sprintf(tmp, " %d", 0);
+            strcat(melhorJogada, tmp);
+        }
+    }
 
     free(tmp);
 }

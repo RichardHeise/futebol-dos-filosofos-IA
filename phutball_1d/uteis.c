@@ -1,4 +1,4 @@
-#include "inteligencia.h"
+#include "uteis.h"
 
 void testaMalloc(void *ptr){
     if(!ptr){
@@ -44,4 +44,27 @@ int descobrePosicaoBola(char *p_campo, int tam) {
         if (p_campo[i] == 'o') return i; 
     }
     return -1;
+}
+
+//calcula os chutes necessários pra fazer o gol
+void chuta(jogo_t *jogo, char *melhorJogada, int* chutes, int qtdChutes, int gol){
+
+
+    char* tmp = criaString();
+    sprintf(melhorJogada, "%c o %d", jogo->lado_meu, qtdChutes + ((gol) ? 1 : 0));
+
+    for (int i = 0; i < qtdChutes; i++) {
+        sprintf(tmp, " %d", chutes[i]+1);
+        strcat(melhorJogada, tmp);
+    }
+
+    if (gol) {
+        sprintf(tmp, " %d", jogo->tam_campo+1);
+        strcat(melhorJogada, tmp);
+    }
+
+    sprintf(tmp, "\n");
+    strcat(melhorJogada, tmp);
+
+    free(tmp);
 }

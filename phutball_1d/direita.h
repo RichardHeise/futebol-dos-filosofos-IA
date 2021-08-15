@@ -1,16 +1,14 @@
 #ifndef DIREITA_H
 #define DIREITA_H
 
-#include "inteligencia.h"
+#include "uteis.h"
 
-void fazerGol(jogo_t *jogo, char *melhorJogada, int* chutes, int qtdChutes);
+int heuristicaDireita(char *p_campo, int tam, int pos_bola);
 
-int heuristica(char *p_campo, int tam, int pos_bola);
-
-int testaFilosofosAdv(jogo_t *jogo, char *campo_tmp);
+int testaFilosofosDireita(jogo_t *jogo, char *campo_tmp);
 
 int testaChuteDireita(jogo_t *jogo, char *campo);
 
-char* buscaMelhorJogada (char *buffer);
+char* buscaMelhorJogadaDireita(jogo_t *jogo);
 
 #endif

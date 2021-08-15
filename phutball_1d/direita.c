@@ -1,30 +1,11 @@
 #include "direita.h"
+#include "esquerda.h"
 
-//calcula os chutes necessários pra fazer o gol
-void fazerGol(jogo_t *jogo, char *melhorJogada, int* chutes, int qtdChutes){
-
-    char* tmp = criaString();
-    sprintf(melhorJogada, "%c o %d", jogo->lado_meu, qtdChutes+1);
-
-    for (int i = 0; i < qtdChutes; i++) {
-        sprintf(tmp, " %d", chutes[i]+1);
-        strcat(melhorJogada, tmp);
-    }
-
-    sprintf(tmp, " %d", jogo->tam_campo+1);
-    strcat(melhorJogada, tmp);
-
-    sprintf(tmp, "\n");
-    strcat(melhorJogada, tmp);
-
-    free(tmp);
-}
-
-// essa checa pra direita
 int heuristicaDireita(char *p_campo, int tam, int pos_bola) {
 
     //distancia da bola ate o fim do campo
 
+    int caso;
     int dist = tam - pos_bola;
     if(dist == 0)
         return 5;
@@ -37,21 +18,33 @@ int heuristicaDireita(char *p_campo, int tam, int pos_bola) {
         passos++; 
 
     //se é par, intera i em 1 e se é impar intera i em 2
-    if(dist % 2 == 0)
+    caso = dist % 2;
+    if(caso == 0)
         i++;
     else
         i+=2;
 
     //calcula o resto e dale
-    for(; i < tam ; i+=2){
-        if(p_campo[i] != 'f')
-            passos++;
+    // caso par 
+    if (caso == 0) {
+        for(; i < tam ; i+=2){
+            if(p_campo[i] != 'f' && p_campo[i+1] != 'f')
+                passos++;
+        }
     }
+    else {
+        //caso impar
+        for(; i < tam ; i+=2){
+            if(p_campo[i] != 'f' && p_campo[i-1] != 'f')
+                passos++;
+        }
+    }
+
 
     return passos+1;
 }
 
-int testaFilosofosAdv(jogo_t *jogo, char *campo_tmp){
+int testaFilosofosDireita(jogo_t *jogo, char *campo_tmp){
 
     int h, maiorHeuristica = 0;
 
@@ -70,8 +63,6 @@ int testaFilosofosAdv(jogo_t *jogo, char *campo_tmp){
             if (h > maiorHeuristica) {
                 maiorHeuristica = h;
             }
-
-            // printf("campo: %s, heuristicaDireita: %d\n", campo_tmp, h);
 
         }
     }
@@ -115,13 +106,15 @@ int testaChuteDireita(jogo_t *jogo, char *campo){
                 campo_tmp[i] = 'o';
 
                 // analiso a heuristicaDireita do campo
-                h = heuristicaDireita(campo_tmp, jogo->tam_campo, i+1);
+                if (jogo->lado_meu == 'd')
+                    h = heuristicaEsquerda(campo_tmp, jogo->tam_campo, i+1);
+                else 
+                    h = heuristicaDireita(campo_tmp, jogo->tam_campo, i+1);
 
                 if (h > maiorHeuristica) {
                     maiorHeuristica = h;
                 }
 
-                printf("campo: %s, heuristicaDireita: %d, maior: %d\n", campo_tmp, h, maiorHeuristica);
             }
         }
     }
@@ -129,26 +122,14 @@ int testaChuteDireita(jogo_t *jogo, char *campo){
     return maiorHeuristica;
 }
 
-char* buscaMelhorJogada (char *buffer) {
+char* buscaMelhorJogadaDireita (jogo_t *jogo) {
 
-    //crio a struct
-    jogo_t *jogo;
-    jogo = criaJogo();
-
-    //le entrada e descobre posicao da bola
-    leEntrada(buffer, jogo);
     jogo->pos_bola = descobrePosicaoBola(jogo->campo, jogo->tam_campo)+1;
 
     //declarei o vetor temporário
     char *campo_tmp = criaString();
     char *melhorJogada = criaString();
     int h, heu_chute, melhorHeuristica = 32000;
-
-    printf("============ CHECANDO FILOSOFO =================\n");
-    printf("pos bola: %d\n", jogo->pos_bola);
-
-    // FUNCIONOU HEIN só não chamei a esquerda.h aqui, se quiser testar é só incluir
-    // printf("heuristicaDireita teste: %d\n", heuristicaEsquerda(jogo->campo, jogo->tam_campo, jogo->pos_bola));
 
     // OTIMIZAR IGUAL A HEURISTICA!!!
     for (int i = jogo->pos_bola; i < jogo->tam_campo; i++) {
@@ -161,7 +142,7 @@ char* buscaMelhorJogada (char *buffer) {
             campo_tmp[i] = 'f';
 
             // comparando as jogadas atuais
-            h = testaFilosofosAdv(jogo, campo_tmp);
+            h = testaFilosofosDireita(jogo, campo_tmp);
 
             if (jogo->campo[jogo->pos_bola]  == 'f') {
                 heu_chute = testaChuteDireita(jogo, campo_tmp);
@@ -170,12 +151,12 @@ char* buscaMelhorJogada (char *buffer) {
                     h = heu_chute;
             }
 
-            // if (jogo->campo[jogo->pos_bola-2] == 'f') {
-            //     heu_chute = testaChuteEsquerda(jogo, campo_tmp);
+            if (jogo->campo[jogo->pos_bola-2] == 'f') {
+                heu_chute = testaChuteEsquerda(jogo, campo_tmp);
 
-            //     if(heu_chute > h )
-            //         h = heu_chute;
-            // }
+                if(heu_chute > h )
+                    h = heu_chute;
+            }
 
             //comparando com a jogada passada
             if( h < melhorHeuristica){
@@ -185,11 +166,6 @@ char* buscaMelhorJogada (char *buffer) {
         }
     }
 
-    printf("melhor jogada: %s, heuristicaDireita: %d\n", melhorJogada, melhorHeuristica);
-
-    printf("============ CHECANDO CHUTE =================\n");
-    // implementar jogaChute() e decobreChutes()
-    
     int* chutes = criaVetor();
     int qtdChutes = 0;
     int gol = 0;
@@ -216,19 +192,42 @@ char* buscaMelhorJogada (char *buffer) {
 
                     strcpy(campo_tmp, jogo->campo);
 
+
                     for (int k = jogo->pos_bola-1; k < i; k++) {
                         campo_tmp[k] = '.';
                     }
 
                     campo_tmp[i] = 'o';
-                    jogo->pos_bola = i;
+                    jogo->pos_bola = i+1;
+
+                    h = testaFilosofosDireita(jogo, campo_tmp);
+
+                    if (campo_tmp[i+1]  == 'f') {
+                        heu_chute = testaChuteDireita(jogo, campo_tmp);
+
+                        if(heu_chute > h)
+                            h = heu_chute;
+                    }
+                    if (campo_tmp[i-2] == 'f') {
+                        heu_chute = testaChuteEsquerda(jogo, campo_tmp);
+
+                        if(heu_chute > h )
+                            h = heu_chute;
+                    }
+
+                    //comparando com a jogada passada
+                    if( h < melhorHeuristica){
+                        melhorHeuristica = h;
+                        chuta(jogo, melhorJogada, chutes, qtdChutes, 0);
+                    }
+
                 }
             }
         }
     }
     
     if (gol) {
-        fazerGol(jogo, melhorJogada, chutes, qtdChutes);
+        chuta(jogo, melhorJogada, chutes, qtdChutes, gol);
     }
 
     //freee nas variáveis
@@ -236,6 +235,5 @@ char* buscaMelhorJogada (char *buffer) {
     free(jogo->campo);
     free(jogo);
 
-    printf("melhor jogada: %s\n", melhorJogada);
     return melhorJogada;
 }

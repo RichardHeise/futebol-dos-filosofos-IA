@@ -5,8 +5,6 @@
 #include <stdlib.h>
 #include <stddef.h>
 #include <string.h>
-#include <readline/readline.h>
-#include <readline/history.h>
 #include "campo.h"
 #include <math.h>
 
@@ -35,5 +33,7 @@ int *criaVetor();
 int descobrePosicaoBola(char *p_campo, int tam);
 
 void leEntrada(char *buffer, jogo_t *jogo);
+
+void chuta(jogo_t *jogo, char *melhorJogada, int* chutes, int qtdChutes, int gol);
 
 #endif

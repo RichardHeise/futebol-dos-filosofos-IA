@@ -1,7 +1,7 @@
 # CFLAGS = -g -Wall -Wno-unused-result -O3
 # LDLIBS = -l hiredis -l readline
 
-# all: direita inteligencia exemplo1 exemplo2 resolutor
+# all: direita uteis exemplo1 exemplo2 resolutor
 
 # controlador: controlador.c
 
@@ -11,15 +11,15 @@
 
 # resolutor: campo.h campo.c resolutor.c direita.o
 
-# direita: direita.c direita.h inteligencia.o
+# direita: direita.c direita.h uteis.o
 
-# inteligencia: inteligencia.h inteligencia.c
+# uteis: uteis.h uteis.c
 
 # clean:
 # 	rm -f exemplo1 exemplo2 *.o
 
 CC = gcc
-OBJS = resolutor.o direita.o inteligencia.o	campo.o	esquerda.o
+OBJS = resolutor.o direita.o uteis.o campo.o esquerda.o marIA.o
 LIBS = -l hiredis -l readline
 OUTPUT = 	
 CFLAGS = -Wall -O3
@@ -32,9 +32,13 @@ exemplo2: campo.h campo.c exemplo2.c
 
 resolutor.o: resolutor.c
 	$(CC) $(CFLAGS) -c resolutor.c
+	
+marIA.o: marIA.h marIA.c
+	$(CC) $(CFLAGS) -c marIA.c
 
 campo.o: campo.h campo.c
 	$(CC) $(CFLAGS) -c campo.c
+
 
 direita.o: direita.c direita.h
 	$(CC) $(CFLAGS) -c direita.c
@@ -42,8 +46,8 @@ direita.o: direita.c direita.h
 esquerda.o: esquerda.c esquerda.h
 	$(CC) $(CFLAGS) -c esquerda.c
 
-inteligencia.o: inteligencia.c inteligencia.h
-	$(CC) $(CFLAGS) -c inteligencia.c
+uteis.o: uteis.c uteis.h
+	$(CC) $(CFLAGS) -c uteis.c
 
 clean:
 	$(RM) *.tmp

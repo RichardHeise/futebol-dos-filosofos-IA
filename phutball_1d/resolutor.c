@@ -1,4 +1,4 @@
-#include "direita.h"
+#include "marIA.h"
 #include "campo.h"
 
 int main(int argc, char **argv) {
@@ -9,8 +9,8 @@ int main(int argc, char **argv) {
 
   while(1) {
     campo_recebe(buffer);
-    printf("%s", buffer);
-    linha = buscaMelhorJogada(buffer);
+    //printf("%s", buffer);
+    linha = resolve(buffer);
     if(linha[0] == '0')
       break;
     sprintf(buffer, "%s\n", linha);

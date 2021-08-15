@@ -51,6 +51,9 @@ int heuristica(char *p_campo, int tam, int pos_bola) {
     //distancia da bola ate o fim do campo
 
     int dist = tam - pos_bola;
+    printf("\ndist: %d\n", dist);
+    if(dist == 0)
+        return 5;
 
     //indice e numero de passos até terminar o jogo
     int i = pos_bola, passos = 0;
@@ -114,34 +117,43 @@ int testaFilosofosAdv(jogo_t *jogo, char *campo_tmp){
                 maiorHeuristica = h;
             }
 
+            // printf("campo: %s, heuristica: %d\n", campo_tmp, h);
+
         }
     }
 
-    printf("campo: %s, heuristica: %d\n", campo_tmp, h);
     free(campo_tmpAdv);
     return maiorHeuristica;
 }
 
-int testaChuteDireita(jogo_t *jogo, char *campo_tmp){
+int testaChuteDireita(jogo_t *jogo, char *campo){
 
-    int gol = 1, h, maiorHeuristica = 0;
+    printf("============ CHECANDO CHUTE DIREITA =================\n");
+    printf("\nCAMPOR?: %s\n", campo);
+
+    if( heuristica(campo, jogo->tam_campo, jogo->pos_bola) == 1 ){
+        if(jogo->lado_meu == 'd')
+            return 34000;
+        return 1;
+    }
+
+    int h, maiorHeuristica = 0;
 
     int contador = 0;
 
     for (int i = jogo->pos_bola+1; i < jogo->tam_campo; i++) {
         
-        if (campo_tmp[i] == 'f') {
+        if (campo[i] == 'f') {
             contador = 0;
 
         } else {
             contador++;
 
             if ( contador == 2) {
-                gol = 0;
                 break;
             } else {
-
-                strcpy(campo_tmp, jogo->campo);
+                char *campo_tmp = criaString();
+                strcpy(campo_tmp, campo);
 
                 // limpa os filosofos do chute
                 for (int k = jogo->pos_bola-1; k < i; k++) {
@@ -150,22 +162,17 @@ int testaChuteDireita(jogo_t *jogo, char *campo_tmp){
 
                 // chuta
                 campo_tmp[i] = 'o';
-                jogo->pos_bola = i;
 
                 // analiso a heuristica do campo
-                h = heuristica(campo_tmp, jogo->tam_campo, jogo->pos_bola);
+                h = heuristica(campo_tmp, jogo->tam_campo, i+1);
 
                 if (h > maiorHeuristica) {
                     maiorHeuristica = h;
                 }
+
+                printf("campo: %s, heuristica: %d, maior: %d\n", campo_tmp, h, maiorHeuristica);
             }
         }
-    }
-
-    if(gol){
-        if(jogo->lado_meu == 'e')
-            return 0;
-        return 34000;
     }
 
     return maiorHeuristica;

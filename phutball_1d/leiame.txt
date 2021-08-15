@@ -20,6 +20,10 @@ Conteúdo do pacote:
 - redis.conf: arquivo de configuração para ser usado com o servidor
   redis
 
+Para compilar os programas o sistema deve ter o pacote libhiredis-dev 
+instalado, ele contém a biblioteca hiredis usada pelos programa para 
+acessar o servidor redis.
+
 Para preparar o seu jogador para se comunicar com o controlador do
 campo você deve alterar o seu programa para utilizar as funções que
 enviam e recebem dados do controlador. O exemplo1 pode ajudar nesta

@@ -32,7 +32,7 @@ redisContext* inicia(int argc, char **argv, char *lado, int *tam,
   *jogadas = atoi(argv[3]);
   strcpy(tempo, argv[4]);
   ip  = (argc > 5) ? argv[5] : "127.0.0.1";
-  porta = (argc > 6) ? atoi(argv[6]) : 9555;
+  porta = (argc > 6) ? atoi(argv[6]) : 10001;
 
   rediscontext = redisConnect(ip, porta);
   if (rediscontext == NULL || rediscontext->err) {
@@ -100,7 +100,10 @@ int aplica_mov(char *buf, char *campo, int tam,
       if(bola < 0 || bola >= tam)
 	break;
       inc = (--rb[i] < bola) ? -1 : 1;
-      for(j = bola + inc; j != rb[i]; j += inc)
+      j = bola + inc;
+      if(j == rb[i])
+	return 0;
+      for(; j != rb[i]; j += inc)
 	if(buf[j] != 'f')
 	  return 0;
         else

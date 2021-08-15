@@ -1,4 +1,5 @@
-#include "inteligencia.h"
+#include "direita.h"
+#include "campo.h"
 
 int main(int argc, char **argv) {
   char *buffer = criaString();

@@ -1,3 +1,8 @@
+# Arquivo makefile 
+# Autores:
+# Richard Fernando Heise Ferreira GRR20191053
+# Carlos Iago Bueno GRR20190171 
+
 CC = gcc
 OBJS =  direita.o uteis.o campo.o esquerda.o marIA.o marIAlib.o
 LIBS = -l hiredis -l readline

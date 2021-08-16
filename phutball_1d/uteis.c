@@ -1,3 +1,8 @@
+/**
+ * Autores:
+ * Richard Fernando Heise Ferreira GRR20101053
+ * Carlos Iago Bueno GRR20190171
+ */
 #include "uteis.h"
 
 void testaMalloc(void *ptr){
@@ -49,14 +54,17 @@ int descobrePosicaoBola(char *p_campo, int tam) {
 void chuta(jogo_t *jogo, char *melhorJogada, int* chutes, int qtdChutes, int gol){
 
     char* tmp = criaString();
+
+    // coloca uma string inicial na melhor jogada
     sprintf(melhorJogada, "%c o %d", jogo->lado_meu, qtdChutes + ((gol) ? 1 : 0));
 
+    // concatena os proximos chutes
     for (int i = 0; i < qtdChutes; i++) {
         sprintf(tmp, " %d", chutes[i]+1);
         strcat(melhorJogada, tmp);
     }
 
-
+    // se um gol eh possivel chutamos para fora do campo
     if (gol) {
         if (jogo->lado_meu == 'e') {
             sprintf(tmp, " %d", jogo->tam_campo+1);

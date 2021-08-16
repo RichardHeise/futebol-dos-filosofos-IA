@@ -1,3 +1,8 @@
+/**
+ * Autores:
+ * Richard Fernando Heise Ferreira GRR20101053
+ * Carlos Iago Bueno GRR20190171
+ */
 #include "marIAlib.h"
 
 char* resolve(char* buffer) {
@@ -8,6 +13,7 @@ char* resolve(char* buffer) {
     //le entrada e descobre posicao da bola
     leEntrada(buffer, jogo);
     
+    // verifica qual lado estamos e chama o respectivo
     if (jogo->lado_meu == 'e') {
         return buscaMelhorJogadaDireita(jogo);
     }
@@ -17,4 +23,3 @@ char* resolve(char* buffer) {
 
     return "0";
 }
-
